@@ -715,6 +715,12 @@ object PreferencesUtil {
         return prefs.getString(context.getString(R.string.keyboard_previous_id_key), null)
     }
 
+    fun isPasskeysEnable(context: Context): Boolean {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        return prefs.getBoolean(context.getString(R.string.passkeys_enable_key),
+            context.resources.getBoolean(R.bool.passkeys_enable_default))
+    }
+
     fun isPasskeyCloseDatabaseEnable(context: Context): Boolean {
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         return prefs.getBoolean(context.getString(R.string.passkeys_close_database_key),
@@ -958,6 +964,7 @@ object PreferencesUtil {
                 context.getString(R.string.keyboard_previous_search_key) -> editor.putBoolean(name, value.toBoolean())
                 context.getString(R.string.keyboard_previous_fill_in_key) -> editor.putBoolean(name, value.toBoolean())
                 context.getString(R.string.keyboard_previous_lock_key) -> editor.putBoolean(name, value.toBoolean())
+                context.getString(R.string.passkeys_enable_key) -> editor.putBoolean(name, value.toBoolean())
                 context.getString(R.string.passkeys_close_database_key) -> editor.putBoolean(name, value.toBoolean())
                 context.getString(R.string.passkeys_auto_select_key) -> editor.putBoolean(name, value.toBoolean())
                 context.getString(R.string.user_verification_preferred_key) -> editor.putBoolean(name, value.toBoolean())

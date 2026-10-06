@@ -137,6 +137,8 @@
     <string name="settings_autofill_key" translatable="false">settings_autofill_key</string>
     <string name="passkeys_explanation_key" translatable="false">passkeys_explanation_key</string>
     <string name="settings_passkeys_key" translatable="false">settings_passkeys_key</string>
+    <string name="passkeys_enable_key" translatable="false">passkeys_enable_key</string>
+    <bool name="passkeys_enable_default" translatable="false">true</bool>
     <string name="passkeys_close_database_key" translatable="false">passkeys_close_database_key</string>
     <bool name="passkeys_close_database_default" translatable="false">true</bool>
     <string name="passkeys_privileged_apps_key" translatable="false">passkeys_privileged_apps_key</string>

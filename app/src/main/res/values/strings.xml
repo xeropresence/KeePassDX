@@ -436,6 +436,8 @@
     <string name="passkeys">Passkeys</string>
     <string name="passkeys_explanation_summary">Configure Passkeys for fast and secure passwordless login</string>
     <string name="passkeys_preference_title">Passkeys settings</string>
+    <string name="passkeys_enable_title">Enable passkeys</string>
+    <string name="passkeys_enable_summary">Create and use passkeys through the credential manager</string>
     <string name="passkeys_close_database_title">Close database</string>
     <string name="passkeys_close_database_summary">Close the database after a passkey selection</string>
     <string name="passkeys_privileged_apps_title">Privileged apps</string>

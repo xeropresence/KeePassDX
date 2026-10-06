@@ -21,6 +21,11 @@
     <PreferenceCategory
         android:title="@string/general">
         <SwitchPreferenceCompat
+            android:key="@string/passkeys_enable_key"
+            android:title="@string/passkeys_enable_title"
+            android:summary="@string/passkeys_enable_summary"
+            android:defaultValue="@bool/passkeys_enable_default"/>
+        <SwitchPreferenceCompat
             android:key="@string/passkeys_close_database_key"
             android:title="@string/passkeys_close_database_title"
             android:summary="@string/passkeys_close_database_summary"

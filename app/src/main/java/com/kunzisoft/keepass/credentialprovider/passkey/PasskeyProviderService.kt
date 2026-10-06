@@ -62,6 +62,7 @@ import com.kunzisoft.keepass.database.exception.RegisterInReadOnlyDatabaseExcept
 import com.kunzisoft.keepass.database.helper.SearchHelper
 import com.kunzisoft.keepass.model.SearchInfo
 import com.kunzisoft.keepass.settings.PreferencesUtil.isPasskeyAutoSelectEnable
+import com.kunzisoft.keepass.settings.PreferencesUtil.isPasskeysEnable
 import com.kunzisoft.keepass.view.toastError
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -128,7 +129,9 @@ class PasskeyProviderService : CredentialProviderService() {
         request: BeginGetCredentialRequest,
         callback: (BeginGetCredentialResponse?) -> Unit
     ) {
+        val passkeysEnabled = isPasskeysEnable(this)
         var knownOption = false
+        var passkeyOptionIgnored = false
         for (option in request.beginGetCredentialOptions) {
             when (option) {
                 is BeginGetPasswordOption -> {
@@ -138,15 +141,25 @@ class PasskeyProviderService : CredentialProviderService() {
                     }
                 }
                 is BeginGetPublicKeyCredentialOption -> {
-                    knownOption = true
-                    populatePasskeyData(option) { listCredentials ->
-                        callback(BeginGetCredentialResponse(listCredentials))
+                    if (passkeysEnabled) {
+                        knownOption = true
+                        populatePasskeyData(option) { listCredentials ->
+                            callback(BeginGetCredentialResponse(listCredentials))
+                        }
+                    } else {
+                        Log.d(TAG, "Passkeys disabled in settings, public key credential option ignored")
+                        passkeyOptionIgnored = true
                     }
                 }
             }
         }
         if (knownOption.not()) {
-            throw IOException("unknown type of beginGetCredentialOption")
+            if (passkeyOptionIgnored) {
+                // Only passkeys were requested, answer without credentials
+                callback(BeginGetCredentialResponse())
+            } else {
+                throw IOException("unknown type of beginGetCredentialOption")
+            }
         }
     }
 
@@ -178,7 +191,12 @@ class PasskeyProviderService : CredentialProviderService() {
             }
             is BeginCreatePublicKeyCredentialRequest -> {
                 // Request is passkey type
-                handleCreatePasskeyQuery(request, callback)
+                if (isPasskeysEnable(this)) {
+                    handleCreatePasskeyQuery(request, callback)
+                } else {
+                    Log.d(TAG, "Passkeys disabled in settings, public key credential creation ignored")
+                    callback(emptyList())
+                }
             }
             else -> {
                 // request type not supported
